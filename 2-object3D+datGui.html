@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一个three.js案例</title>
+  <script src="./three.js-master/build/three.min.js"></script>
+  <script src="stats.js-master/build/stats.min.js"></script>
+  <script src="https://cdn.bootcss.com/dat-gui/0.7.1/dat.gui.min.js"></script>
+</head>
+<body onload="init()">
+  <script>
+    let renderer, carmera, scene, mesh
+    let stats
+    function initRenderer() {
+      renderer = new THREE.WebGLRenderer()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+      // renderer.setClearColor(0x0000ff)
+    }
+    function initScene() {
+      scene = new THREE.Scene()
+    }
+    function initCamera() {
+      carmera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000)
+      carmera.position.z = 400
+      // scene.add(carmera)
+    }
+    function initMesh() {
+      let geometry = new THREE.BoxGeometry(100, 100, 100)
+      let material = new THREE.MeshNormalMaterial()
+      mesh = new THREE.Mesh(geometry, material)
+      mesh.visible = true
+      scene.add(mesh)
+      console.log(scene.children)
+    }
+    function animate() {
+      requestAnimationFrame(animate)
+      stats.update()
+      mesh.rotation.x += 0.01
+      mesh.rotation.y += 0.01
+      renderer.render(scene, carmera)
+    }
+    function initStats() {
+      stats = new Stats()
+      document.body.appendChild(stats.dom)
+    }
+    // function initObject3D() {
+    //   obj
+    // }
+    function datGui() {
+      let controls = {
+        positionX: 0,
+        positionY: 0,
+        positionZ: 0
+      };
+      gui = new dat.GUI();
+      gui.add(controls, "positionX", -1, 1).onChange(updatePosition);
+      gui.add(controls, "positionY").onChange(updatePosition);
+      gui.add(controls, "positionZ").onChange(updatePosition);
+
+      function updatePosition() {
+        mesh.position.set(controls.positionX, controls.positionY, controls.positionZ);
+      }
+    }
+    function init() {
+      initRenderer()
+      initScene()
+      initCamera()
+      initMesh()
+      initStats()
+      animate()
+      datGui()
+    }
+  </script>
+</body>
+</html>

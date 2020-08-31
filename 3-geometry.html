@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第一个three.js案例</title>
+  <script src="./three.js-master/build/three.min.js"></script>
+  <script src="stats.js-master/build/stats.min.js"></script>
+</head>
+<body onload="init()">
+  <script>
+    let renderer, carmera, scene, boxMesh
+    let stats
+    function initRenderer() {
+      renderer = new THREE.WebGLRenderer()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      document.body.appendChild(renderer.domElement)
+      // renderer.setClearColor(0x0000ff)
+    }
+    function initScene() {
+      scene = new THREE.Scene()
+    }
+    function initCamera() {
+      carmera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000)
+      carmera.position.z = 400
+    }
+    function initMesh() {
+      let boxGeo = new THREE.BoxGeometry(100, 100, 100)
+      let circleGeo = new THREE.CircleGeometry(20, 32)
+      let coneGeo = new THREE.ConeGeometry(5, 20, 32)
+      let cylinderGeo = new THREE.CylinderGeometry(5, 5, 20, 32)
+      let sphereGeo = new THREE.SphereGeometry(5, 32, 32)
+      let planeGeo = new THREE.PlaneGeometry(5, 20, 32)
+      let toursGeo = new THREE.PlaneGeometry(10, 3, 16, 100)
+
+      let material = new THREE.MeshNormalMaterial({color: 0x00ff00})
+
+      boxMesh = new THREE.Mesh(boxGeo, material)
+      let circleMesh = new THREE.Mesh(circleGeo, material)
+      circleMesh.position.set(100, 0, 0)
+      let coneMesh = new THREE.Mesh(coneGeo, material)
+      coneMesh.position.set(-100, 0, 0)
+      let cylinderMesh = new THREE.Mesh(cylinderGeo, material)
+      cylinderMesh.position.set(-120, 0, 0)
+      let sphereMesh = new THREE.Mesh(sphereGeo, material)
+      sphereMesh.position.set(120, 0, 0)
+      let planeMesh = new THREE.Mesh(planeGeo, material)
+      planeMesh.position.set(140, 0, 0)
+      let toursMesh = new THREE.Mesh(toursGeo, material)
+      toursMesh.position.set(160, 0, 0)
+
+      scene.add(boxMesh)
+      scene.add(circleMesh)
+      scene.add(coneMesh)
+      scene.add(cylinderMesh)
+      scene.add(sphereMesh)
+      scene.add(planeMesh)
+      scene.add(toursMesh)
+    }
+    function animate() {
+      requestAnimationFrame(animate)
+      stats.update()
+      boxMesh.rotation.x += 0.01
+      boxMesh.rotation.y += 0.01
+      renderer.render(scene, carmera)
+    }
+    function initStats() {
+      stats = new Stats()
+      document.body.appendChild(stats.dom)
+    }
+    function init() {
+      initRenderer()
+      initScene()
+      initCamera()
+      initMesh()
+      initStats()
+      animate()
+    }
+  </script>
+</body>
+</html>
